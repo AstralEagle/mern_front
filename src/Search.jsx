@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import {useNavigate, Link, createSearchParams} from 'react-router-dom';
 import backgroundImage from './img/image2.png';
 import useRequestRecettes from "./hook/useRequestRecettes.jsx";
 import useRequestScrapRecettes from "./hook/useRequestScrapRecettes.jsx"; // Import de l'image de fond
@@ -147,26 +147,35 @@ const recipes = [
 
 function Search() {
   const navigate = useNavigate();
+
+  const [scrapSearchValue, setScrapSearchValue] = useState("")
   const {recettes, setSearchValue} = useRequestScrapRecettes()
 
 
   const handleSearchChange = (event) => {
-    setSearchValue(event.target.value);
+    setScrapSearchValue(event.target.value);
   };
 
-  const handleRecipeClick = (id) => {
+  const handleRecipeClick = (id,object) => {
     console.log(`Clicked Recipe ID: ${id}`);
-    navigate(`/recipe/${id}`);
+    const objectData = JSON.stringify(object);
+    // navigate(`/recipe/${id}`);
+    navigate(`/recipe?${new URLSearchParams({recipe: objectData}).toString()}`);
   };
+  const handleSearchSubmit = (e) => {
+    setSearchValue(scrapSearchValue);
+    e.preventDefault()
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover' }}>
       <div className="w-1/2 h-screen bg-orange-50 pt-20 px-20">
         <div className="mb-8 text-center">
-          <form className="flex justify-center">
+          <form onSubmit={handleSearchSubmit} className="flex justify-center">
             <input
               type="text"
               placeholder="Recherchez une recette..."
+              value={scrapSearchValue}
               onChange={handleSearchChange}
               className="p-2 w-3/4 rounded-l-lg border-2 border-r-0 border-gray-300"
             />
@@ -180,7 +189,7 @@ function Search() {
         </div>
         <div className="flex flex-wrap overflow-y-scroll">
           {recettes.map(recipe => (
-            <div key={recipe.id} className="p-2 w-1/2" onClick={() => handleRecipeClick(recipe._id)}>
+            <div key={recipe.id} className="p-2 w-1/2" onClick={() => handleRecipeClick(recipe._id, recipe)}>
               <div className="flex items-center bg-white shadow-lg rounded-lg overflow-hidden h-full cursor-pointer">
                 <img className="w-40 h-40 object-cover flex-none" src={recipe.image} alt={recipe.name} />
                 <div className="p-4 flex-grow">

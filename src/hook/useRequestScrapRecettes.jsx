@@ -4,15 +4,19 @@ import axios from "axios";
 const useRequestRecettes = () => {
     const [recettes, setRecettes] = useState([])
     const [searchValue, setSearchValue] = useState("")
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         let cancel = false;
         (
             async () => {
                 try {
+                    await setLoading(true)
                     const {data} = await axios.get(`http://localhost:3000/scrap`,{params: {keyword: searchValue}});
-                    if(!cancel)
+                    if(!cancel){
                         setRecettes(data)
+                        setLoading(false)
+                    }
 
                 } catch
                     (e) {
@@ -29,7 +33,8 @@ const useRequestRecettes = () => {
 
     return {
         recettes,
-        setSearchValue
+        setSearchValue,
+        loading
     }
 }
 
