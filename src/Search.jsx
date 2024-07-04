@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import backgroundImage from './img/image2.png'; // Import de l'image de fond
+import backgroundImage from './img/image2.png';
+import useRequestRecettes from "./hook/useRequestRecettes.jsx";
+import useRequestScrapRecettes from "./hook/useRequestScrapRecettes.jsx"; // Import de l'image de fond
 
 const recipes = [
   {
@@ -144,17 +146,12 @@ const recipes = [
 ];
 
 function Search() {
-  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const {recettes, setSearchValue} = useRequestScrapRecettes()
+
 
   const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleSearchSubmit = (event) => {
-    event.preventDefault();
-    // Implement search logic or redirect here
-    console.log('Search for:', searchTerm);
+    setSearchValue(event.target.value);
   };
 
   const handleRecipeClick = (id) => {
@@ -166,11 +163,10 @@ function Search() {
     <div className="flex justify-center items-center min-h-screen" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover' }}>
       <div className="w-1/2 h-screen bg-orange-50 pt-20 px-20">
         <div className="mb-8 text-center">
-          <form onSubmit={handleSearchSubmit} className="flex justify-center">
+          <form className="flex justify-center">
             <input
               type="text"
               placeholder="Recherchez une recette..."
-              value={searchTerm}
               onChange={handleSearchChange}
               className="p-2 w-3/4 rounded-l-lg border-2 border-r-0 border-gray-300"
             />
@@ -182,9 +178,9 @@ function Search() {
             <Link to="/favorites" className="text-blue-500 underline">Voir mes favoris</Link>
           </div>
         </div>
-        <div className="flex flex-wrap">
-          {recipes.map(recipe => (
-            <div key={recipe.id} className="p-2 w-1/2" onClick={() => handleRecipeClick(recipe.id)}>
+        <div className="flex flex-wrap overflow-y-scroll">
+          {recettes.map(recipe => (
+            <div key={recipe.id} className="p-2 w-1/2" onClick={() => handleRecipeClick(recipe._id)}>
               <div className="flex items-center bg-white shadow-lg rounded-lg overflow-hidden h-full cursor-pointer">
                 <img className="w-40 h-40 object-cover flex-none" src={recipe.image} alt={recipe.name} />
                 <div className="p-4 flex-grow">

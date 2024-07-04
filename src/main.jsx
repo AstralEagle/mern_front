@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './index.css';
 import './output.css';
 import App from './App';
-import Search from './search';
+import Search from './Search.jsx';
 import RecipeDetail from './RecipeDetail';
 import Favorites from './Favorites';
 
@@ -12,7 +12,6 @@ const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
-  <React.StrictMode>
     <Router>
       <Routes>
         <Route path="/" element={<App />} />
@@ -21,5 +20,4 @@ root.render(
         <Route path="/favorites" element={<Favorites />} />
       </Routes>
     </Router>
-  </React.StrictMode>,
 );

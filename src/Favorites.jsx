@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import backgroundImage from './img/image2.png'; // Import de l'image de fond
+import backgroundImage from './img/image2.png';
+import useRequestScrapRecettes from "./hook/useRequestScrapRecettes.jsx";
+import useRequestRecettes from "./hook/useRequestRecettes.jsx"; // Import de l'image de fond
 
 const favoriteRecipes = [
   {
@@ -146,6 +148,8 @@ const favoriteRecipes = [
 function Favorites() {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const {recettes, setSearchValue} = useRequestRecettes()
+
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -180,7 +184,7 @@ function Favorites() {
           </form>
         </div>
         <div className="flex flex-wrap">
-          {favoriteRecipes.map(recipe => (
+          {recettes.map(recipe => (
             <div key={recipe.id} className="p-2 w-1/2" onClick={() => handleRecipeClick(recipe.id)}>
               <div className="flex items-center bg-white shadow-lg rounded-lg overflow-hidden h-full cursor-pointer ps-6">
                 <img className="w-40 h-40 object-cover flex-none" src={recipe.image} alt={recipe.name} />
