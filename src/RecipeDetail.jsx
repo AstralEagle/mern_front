@@ -13,6 +13,10 @@ function RecipeDetail() {
     if (queryParams) setRecette(queryParams);
   }, [searchParams]);
 
+  useEffect(() => {
+    console.log(recette)
+  }, [recette]);
+
   if (!recette) {
     return <p>Recette non trouvée !</p>;
   }
@@ -31,7 +35,7 @@ function RecipeDetail() {
           <h3 className="text-xl font-bold mt-4">Ingrédients</h3>
           <ul className="list-disc list-inside">
             {recette.ingredients.map((ingredient, index) => (
-              <li key={index}>{ingredient.number} {ingredient.name}</li>
+              <li key={index}>{ingredient.number !== "0 " ? ingredient.number : ""} {ingredient.name}</li>
             ))}
           </ul>
           <h3 className="text-xl font-bold mt-4">Instructions</h3>
