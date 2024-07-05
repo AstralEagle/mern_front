@@ -35,7 +35,7 @@ const Search = () => {
             <form onSubmit={handleSearchSubmit} className="flex justify-center">
               <input
                 type="text"
-                placeholder="Recherchez une recette..."
+                placeholder="Recherchez une recette par leurs ingrédients..."
                 value={scrapSearchValue}
                 onChange={handleSearchChange}
                 className="p-2 w-3/4 rounded-l-lg border-2 border-r-0 border-gray-300"
