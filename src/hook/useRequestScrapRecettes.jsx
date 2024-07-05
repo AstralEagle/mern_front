@@ -12,7 +12,7 @@ const useRequestRecettes = () => {
             async () => {
                 try {
                     await setLoading(true)
-                    const {data} = await axios.get(`http://localhost:3000/scrap`,{params: {keyword: searchValue}});
+                    const {data} = await axios.get(`${import.meta.env.VITE_URL_API}/scrap`,{params: {keyword: searchValue}});
                     if(!cancel){
                         setRecettes(data)
                         setLoading(false)
@@ -33,7 +33,7 @@ const useRequestRecettes = () => {
 
     const addFav = async (recipe) => {
         try {
-            await axios.post(`http://localhost:3000/recettes/`,recipe);
+            await axios.post(`${import.meta.env.VITE_URL_API}/recettes/`,recipe);
             alert(`${recipe.name} ajouté aux favoris`);
         } catch
             (e) {

@@ -13,9 +13,9 @@ const useRequestFavRecettes = () => {
                     await setLoading(true)
                     let data = [];
                     if(searchValue)
-                        data = (await axios.get(`http://localhost:3000/recettes/search`,{params: {ingredients: searchValue}})).data;
+                        data = (await axios.get(`${import.meta.env.VITE_URL_API}/recettes/search`,{params: {ingredients: searchValue}})).data;
                     else
-                        data = (await axios.get("http://localhost:3000/recettes/")).data;
+                        data = (await axios.get(`${import.meta.env.VITE_URL_API}/recettes/`)).data;
                     if(!cancel){
                         setRecettes(data)
                         setLoading(false)
@@ -35,7 +35,7 @@ const useRequestFavRecettes = () => {
 
     const removeFav = async (id) => {
         try {
-            await axios.delete(`http://localhost:3000/recettes/${id}`);
+            await axios.delete(`${import.meta.env.VITE_URL_API}/recettes/${id}`);
             setRecettes(x => x.filter(y => y._id !== id))
         } catch
             (e) {

@@ -12,7 +12,7 @@ const useRequestRecette = () => {
             async () => {
                 try {
                     await setLoading(true)
-                    const {data} = await axios.get(`http://localhost:3000/recettes/${searchValue}`);
+                    const {data} = await axios.get(`${import.meta.env.VITE_URL_API}/recettes/${searchValue}`);
                     if (!cancel) {
                         setRecette(data)
                         setLoading(false)
