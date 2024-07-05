@@ -31,10 +31,21 @@ const useRequestRecettes = () => {
     }, [searchValue]);
 
 
+    const addFav = async (recipe) => {
+        try {
+            await axios.post(`http://localhost:3000/recettes/`,recipe);
+            alert(`${recipe.name} ajouté aux favoris`);
+        } catch
+            (e) {
+            console.error(e)
+        }
+    }
+
     return {
         recettes,
         setSearchValue,
-        loading
+        loading,
+        addFav
     }
 }
 

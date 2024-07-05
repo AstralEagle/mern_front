@@ -5,27 +5,13 @@ import backgroundImage from './img/image3.png'; // Import de l'image de fond
 function RecipeDetail() {
   const [searchParams] = useSearchParams();
   const [recette, setRecette] = useState(null);
-  const [favorites, setFavorites] = useState(() => {
-    const savedFavorites = localStorage.getItem('favorites');
-    return savedFavorites ? JSON.parse(savedFavorites) : [];
-  });
+
 
   useEffect(() => {
     const queryParams = JSON.parse(Object.fromEntries([...searchParams]).recipe);
-    console.log(queryParams);
 
     if (queryParams) setRecette(queryParams);
   }, [searchParams]);
-
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
-
-  const handleAddToFavorites = (recipe) => {
-    if (!favorites.some(fav => fav.id === recipe.id)) {
-      setFavorites([...favorites, recipe]);
-    }
-  };
 
   if (!recette) {
     return <p>Recette non trouvée !</p>;
@@ -54,12 +40,6 @@ function RecipeDetail() {
               <li key={index} className="mt-1">{instruction}</li>
             ))}
           </ol>
-          <button
-            onClick={() => handleAddToFavorites(recette)}
-            className="bg-yellow-400 text-white p-2 mt-4 rounded-lg w-full"
-          >
-            Ajouter aux favoris
-          </button>
         </div>
       </div>
     </div>

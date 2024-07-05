@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import backgroundImage from './img/image2.png';
 import useRequestScrapRecettes from "./hook/useRequestScrapRecettes.jsx";
@@ -6,15 +6,8 @@ import useRequestScrapRecettes from "./hook/useRequestScrapRecettes.jsx";
 const Search = () => {
   const navigate = useNavigate();
   const [scrapSearchValue, setScrapSearchValue] = useState("");
-  const { recettes, setSearchValue } = useRequestScrapRecettes();
-  const [favorites, setFavorites] = useState(() => {
-    const savedFavorites = localStorage.getItem('favorites');
-    return savedFavorites ? JSON.parse(savedFavorites) : [];
-  });
+  const { recettes, setSearchValue, addFav } = useRequestScrapRecettes();
 
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
 
   const handleSearchChange = (event) => {
     setScrapSearchValue(event.target.value);
@@ -32,9 +25,7 @@ const Search = () => {
   };
 
   const handleAddToFavorites = (recipe) => {
-    if (!favorites.some(fav => fav.id === recipe.id)) {
-      setFavorites([...favorites, recipe]);
-    }
+    addFav(recipe)
   };
 
   return (

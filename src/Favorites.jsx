@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import backgroundImage from './img/image2.png';
-import useRequestScrapRecettes from "./hook/useRequestScrapRecettes.jsx";
+import useRequestFavRecettes from "./hook/useRequestFavRecettes.jsx";
 
 const Search = () => {
   const navigate = useNavigate();
   const [scrapSearchValue, setScrapSearchValue] = useState("");
-  const { recettes, setSearchValue } = useRequestScrapRecettes();
-  const [favorites, setFavorites] = useState(() => {
-    const savedFavorites = localStorage.getItem('favorites');
-    return savedFavorites ? JSON.parse(savedFavorites) : [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
+  const { recettes, setSearchValue, removeFav } = useRequestFavRecettes();
 
   const handleSearchChange = (event) => {
     setScrapSearchValue(event.target.value);
@@ -31,10 +23,8 @@ const Search = () => {
     e.preventDefault();
   };
 
-  const handleAddToFavorites = (recipe) => {
-    if (!favorites.some(fav => fav.id === recipe.id)) {
-      setFavorites([...favorites, recipe]);
-    }
+  const handleRemoveToFavorites = (id) => {
+    removeFav(id)
   };
 
   return (
@@ -55,7 +45,7 @@ const Search = () => {
               </button>
             </form>
             <div className="mt-4">
-              <Link to="/favorites" className="text-blue-500 underline">Voir mes favoris</Link>
+              <Link to="/search" className="text-blue-500 underline">Chercher des recettes</Link>
             </div>
           </div>
           <div className="flex flex-wrap">
@@ -70,7 +60,7 @@ const Search = () => {
                     <p>Prix: {recipe.price}</p>
                   </div>
                   <button
-                    onClick={(e) => { e.stopPropagation(); handleAddToFavorites(recipe); }}
+                    onClick={(e) => { e.stopPropagation(); handleRemoveToFavorites(recipe._id); }}
                     className="bg-red-600 text-white p-2 m-2 rounded-lg"
                   >
                     Retirer des favoris
